@@ -1,7 +1,8 @@
-Composer Library Template
+Parallec
 =========================
+A High Performance Curl wrapper to make parallel http calls written in Php
 
-If you are trying to create a new PHP Composer library, whether it will be going to submitted to packagist.org or just in your Github account, this template of files will surely help you make the process a lot easier and faster.
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mayorcoded/parallec/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mayorcoded/parallec/?branch=master)
 
 Features
 --------
@@ -12,4 +13,3 @@ Features
 * Easy to use to any framework or even a plain php file
 
 
-I encourage that you put more information on this readme file instead of leaving it as is. See [http://www.darwinbiler.com/designing-and-making-the-readme-file-for-your-github-repository/](How to make a README file) for more info.

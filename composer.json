@@ -18,7 +18,9 @@
     },
 	"autoload": {
         "psr-4": {
-            "mayorcoded\\parallec\\": "src/"
+            "mayorcoded\\parallec\\": "src/",
+            "mayorcoded\\parallec\\Exceptions\\": "src/Exceptions/"
+            "mayorcoded\\parallec\\Utilities\\": "src/Utilities/"
         }
     }
 }

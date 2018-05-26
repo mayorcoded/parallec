@@ -6,27 +6,46 @@
  * Time: 4:58 PM
  */
 
-namespace mayorcoded\parallec\Exceptions;
-
+namespace mayorcoded\parallec\Utilities;
+use mayorcoded\parallec\Exceptions\ParallecInvalidParameterException;
 
 class ParallecUtilities
 {
 
     /**
      * @param $url
-     * @param $parameters
+     * @param array $parameters
      * @return resource
+     * @throws ParallecInvalidParameterException
      *
      * set up curl handler for a request with a url and  optional parameters
      */
     public static function setUpCurlHandler($url, $parameters = array()){
-        $curlHandler = curl_init($url);
-        curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER,1);
 
-        foreach ($parameters as $parameter => $value){
-            curl_setopt($curlHandler, $parameter, $value);
+        if(self::urlIsValid($url)) {
+            $curlHandler = curl_init($url);
+            curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, 1);
+
+            foreach ($parameters as $parameter => $value) {
+                curl_setopt($curlHandler, $parameter, $value);
+            }
+
+            return $curlHandler;
+        }else{
+            throw new ParallecInvalidParameterException('Url must be a valid url');
+        }
+    }
+
+    public static function urlIsValid($url){
+
+        if(isset($url)){
+            if(filter_var($url, FILTER_VALIDATE_URL)){
+                return true;
+            }else{
+                return false;
+            }
         }
 
-        return $curlHandler;
+        return false;
     }
 }

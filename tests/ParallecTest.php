@@ -8,5 +8,13 @@
 
 class ParallecTest extends \PHPUnit\Framework\TestCase
 {
+    public function testParallecInstanceAsObject(){
+        $parallec = \mayorcoded\parallec\Parallec::getInstance();
+        $this->assertTrue(is_object($parallec));
+    }
 
+    public function testInstanceOfParallec(){
+        $parallec = \mayorcoded\parallec\Parallec::getInstance();
+        $this->assertInstanceOf(\mayorcoded\parallec\Parallec::class,$parallec);
+    }
 }

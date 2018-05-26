@@ -44,6 +44,19 @@ class Parallec
 
     }
 
+    /**
+     * @param $url
+     * @param array $parameters
+     *
+     * perform GET request on a url with optional parameters
+     */
+    public function GET($url, $parameters = array()){
+
+    }
+
+    /**
+     * @return Parallec|null provide only one instance of a class
+     */
     public static function getInstance(){
         if(self::$instance == NULL){
             self::$instance = new Parallec();

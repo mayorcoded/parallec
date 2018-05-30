@@ -36,7 +36,7 @@ class ParallecUtilities
         }
     }
 
-    public static function urlIsValid($url){
+    private static function urlIsValid($url){
 
         if(isset($url)){
             if(filter_var($url, FILTER_VALIDATE_URL)){

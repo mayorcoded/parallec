@@ -25,6 +25,8 @@ class Parallec
     private static $instance = NULL;
 
     private $multicurlHandle;
+    private $activeCurlExecution = null;
+    private $executionStatus;
     private $requests = array();
 
 
@@ -76,7 +78,18 @@ class Parallec
         $resourceId = ParallecUtilities::getResourceId($curlHandler);
         $this->requests[$resourceId] = $curlHandler;
         curl_setopt($curlHandler, CURLOPT_HEADERFUNCTION, array($this, 'handlerCallback'));
-        $code = curl_multi_add_handle()
+        $curlCode = curl_multi_add_handle($this->multicurlHandle, $curlHandler);
+
+        if($curlCode === CURLM_OK || $curlCode === CURLM_CALL_MULTI_PERFORM){
+
+            do{
+                $this->executionStatus = curl_multi_exec($this->multicurlHandle, $this->activeCurlExecution);
+            }while($this->executionStatus === CURLM_CALL_MULTI_PERFORM);
+
+            //return '';
+        }else{
+            return $curlCode;
+        }
 
         return $curlHandler;
     }

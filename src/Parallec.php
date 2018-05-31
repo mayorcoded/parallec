@@ -77,7 +77,7 @@ class Parallec
 
         $resourceId = ParallecUtilities::getResourceId($curlHandler);
         $this->requests[$resourceId] = $curlHandler;
-        curl_setopt($curlHandler, CURLOPT_HEADERFUNCTION, array($this, 'handlerCallback'));
+        curl_setopt($curlHandler, CURLOPT_HEADERFUNCTION, array($this, 'headerCallback'));
         $curlCode = curl_multi_add_handle($this->multicurlHandle, $curlHandler);
 
         if($curlCode === CURLM_OK || $curlCode === CURLM_CALL_MULTI_PERFORM){
@@ -94,7 +94,13 @@ class Parallec
         return $curlHandler;
     }
 
-    private function handlerCallback(){
+    private function headerCallback($curlHandler, $header){
+        $trimmedHeader = trim($header);
+        $colonPositions = strpos($trimmedHeader, ':');
+
+        if($colonPositions > 0){
+
+        }
 
     }
 

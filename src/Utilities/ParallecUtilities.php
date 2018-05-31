@@ -36,7 +36,14 @@ class ParallecUtilities
         }
     }
 
-    private static function urlIsValid($url){
+    public static function verifyCurlHandle($curlHandle){
+        if(gettype($curlHandle) !== 'resource')
+        {
+            throw new ParallecInvalidParameterException('Parameter must be a valid curl handle');
+        }
+    }
+
+    public static function urlIsValid($url){
 
         if(isset($url)){
             if(filter_var($url, FILTER_VALIDATE_URL)){
@@ -47,5 +54,9 @@ class ParallecUtilities
         }
 
         return false;
+    }
+
+    public static function getResourceId($curlHandler){
+        return (string)$curlHandler;
     }
 }

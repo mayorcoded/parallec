@@ -47,7 +47,9 @@ class Parallec
     }
 
     /**
-     * @return Parallec|null provide only one instance of a class
+     * @return Parallec|null
+     *
+     * provide only one instance of a class
      */
     public static function getInstance(){
         if(self::$instance == NULL){
@@ -61,7 +63,7 @@ class Parallec
     /**
      * @param $url
      * @param array $parameters
-     * @return resource
+     * @return int
      *
      * perform GET request on a url with optional curl parameters
      */
@@ -72,6 +74,12 @@ class Parallec
         return $this->processRequest($curlHandler);
     }
 
+    /**
+     * @param $curlHandler
+     * @return int
+     *
+     * process each curl request
+     */
     private function processRequest($curlHandler){
         ParallecUtilities::verifyCurlHandle($curlHandler);
 
@@ -94,6 +102,13 @@ class Parallec
         return $curlHandler;
     }
 
+    /**
+     * @param $curlHandler
+     * @param $header
+     * @return int
+     *
+     * process the header returned from each curl request
+     */
     private function headerCallback($curlHandler, $header){
         $trimmedHeader = trim($header);
         $colonPosition = strpos($trimmedHeader, ':');

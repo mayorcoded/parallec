@@ -7,7 +7,7 @@
  */
 
 namespace mayorcoded\parallec;
-
+use mayorcoded\parallec\Utilities\ParallecUtilities;
 
 class Parallec
 {
@@ -45,16 +45,6 @@ class Parallec
     }
 
     /**
-     * @param $url
-     * @param array $parameters
-     *
-     * perform GET request on a url with optional parameters
-     */
-    public function GET($url, $parameters = array()){
-
-    }
-
-    /**
      * @return Parallec|null provide only one instance of a class
      */
     public static function getInstance(){
@@ -64,4 +54,26 @@ class Parallec
 
         return self::$instance;
     }
+
+
+    /**
+     * @param $url
+     * @param array $parameters
+     * @return resource
+     *
+     * perform GET request on a url with optional curl parameters
+     */
+    public function ping($url, $parameters = array()){
+
+        $curlHandler = ParallecUtilities::setUpCurlHandler($url, $parameters);
+
+        return $this->processRequest($curlHandler);
+    }
+
+    private function processRequest($curlHandler){
+        ParallecUtilities::verifyCurlHandle($curlHandler);
+
+        return $curlHandler;
+    }
+
 }

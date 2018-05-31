@@ -24,7 +24,8 @@ class Parallec
      */
     private static $instance = NULL;
 
-    private $multicurl;
+    private $multicurlHandle;
+    private $requests = array();
 
 
     /**
@@ -32,8 +33,7 @@ class Parallec
      */
     private function __construct()
     {
-        $this->multicurl = curl_multi_init();
-
+        $this->multicurlHandle = curl_multi_init();
         $this->curlOptions = array(
             'http_code' => CURLINFO_HTTP_CODE,
             'total_time' => CURLINFO_TOTAL_TIME,
@@ -73,7 +73,16 @@ class Parallec
     private function processRequest($curlHandler){
         ParallecUtilities::verifyCurlHandle($curlHandler);
 
+        $resourceId = ParallecUtilities::getResourceId($curlHandler);
+        $this->requests[$resourceId] = $curlHandler;
+        curl_setopt($curlHandler, CURLOPT_HEADERFUNCTION, array($this, 'handlerCallback'));
+        $code = curl_multi_add_handle()
+
         return $curlHandler;
+    }
+
+    private function handlerCallback(){
+
     }
 
 }

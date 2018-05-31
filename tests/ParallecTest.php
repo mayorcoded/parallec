@@ -18,9 +18,4 @@ class ParallecTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(\mayorcoded\parallec\Parallec::class,$parallec);
     }
 
-    public function testProcessRequestInvalidCurlHandler(){
-        $this->expectException(\mayorcoded\parallec\Exceptions\ParallecInvalidParameterException::class);
-        $parallec = \mayorcoded\parallec\Parallec::getInstance();
-        //$parallec->processRequest( '');
-    }
 }

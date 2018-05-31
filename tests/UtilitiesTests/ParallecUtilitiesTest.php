@@ -19,6 +19,11 @@ class ParallecUtilitiesTest extends \PHPUnit\Framework\TestCase
         ParallecUtilities::setUpCurlHandler('');
     }
 
+    public function testValidCurlUrl(){
+        $this->expectException(ParallecInvalidParameterException::class);
+        ParallecUtilities::verifyCurlHandle('');
+    }
+
     public function testUrlValidity(){
 
         $urls = [
@@ -43,4 +48,10 @@ class ParallecUtilitiesTest extends \PHPUnit\Framework\TestCase
             $this->assertFalse(ParallecUtilities::urlIsValid($invalidUrls[$i]));
         }
     }
+
+    public function testGetResourceId(){
+        $this->assertInternalType( 'string',ParallecUtilities::getResourceId(curl_init('')));
+    }
+
+
 }

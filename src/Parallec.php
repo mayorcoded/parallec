@@ -28,7 +28,7 @@ class Parallec
     private $activeCurlExecution = null;
     private $executionStatus;
     private $requests = array();
-
+    private $responses = array();
 
     /**
      * Parallec constructor. make class singleton
@@ -96,12 +96,18 @@ class Parallec
 
     private function headerCallback($curlHandler, $header){
         $trimmedHeader = trim($header);
-        $colonPositions = strpos($trimmedHeader, ':');
+        $colonPosition = strpos($trimmedHeader, ':');
+        $resourceId = ParallecUtilities::getResourceId($curlHandler);
 
-        if($colonPositions > 0){
+        if($colonPosition > 0){
+            $headerKey = substr($trimmedHeader,0,$colonPosition);
+            $headerValue = preg_replace('/^\W+/', '', substr($trimmedHeader, $colonPosition));
 
+            //set the response header for the curl request
+            $this->responses[$resourceId]['headers'][$headerKey] = $headerValue;
         }
 
+        return strlen($header);
     }
 
 }

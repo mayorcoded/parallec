@@ -7,20 +7,23 @@
  */
 
 namespace mayorcoded\parallec;
+use mayorcoded\parallec\Model\ParallecCurlModel;
 use mayorcoded\parallec\Utilities\ParallecUtilities;
 
 class Parallec
 {
 
     /**
-     * @var $curlOptions
-     *
      * This field stores curl options on instantiation of the class
+     *
+     * @var $curlOptions
      */
     private $curlOptions;
 
     /**
-     * @var null $isInstance ensures that only once instance of the class exists
+     * Ensures that only once instance of the class exists
+     *
+     * @var null
      */
     private static $instance = NULL;
 
@@ -31,7 +34,9 @@ class Parallec
     private $responses = array();
 
     /**
-     * Parallec constructor. make class singleton
+     * Make class singleton with private access
+     *
+     * Parallec constructor.
      */
     private function __construct()
     {
@@ -47,9 +52,9 @@ class Parallec
     }
 
     /**
-     * @return Parallec|null
+     * Provide only one instance of a class
      *
-     * provide only one instance of a class
+     * @return Parallec|null
      */
     public static function getInstance(){
         if(self::$instance == NULL){
@@ -61,11 +66,11 @@ class Parallec
 
 
     /**
+     * Make curl request on a url with optional curl parameters
+     *
      * @param $url
      * @param array $parameters
-     * @return int
-     *
-     * perform GET request on a url with optional curl parameters
+     * @return ParallecCurlModel
      */
     public function ping($url, $parameters = array()){
 
@@ -75,10 +80,10 @@ class Parallec
     }
 
     /**
-     * @param $curlHandler
-     * @return int
+     * Process each curl request
      *
-     * process each curl request
+     * @param $curlHandler
+     * @return ParallecCurlModel
      */
     private function processRequest($curlHandler){
         ParallecUtilities::verifyCurlHandle($curlHandler);
@@ -94,20 +99,19 @@ class Parallec
                 $this->executionStatus = curl_multi_exec($this->multicurlHandle, $this->activeCurlExecution);
             }while($this->executionStatus === CURLM_CALL_MULTI_PERFORM);
 
-            //return '';
+            return new ParallecCurlModel($resourceId);
         }else{
             return $curlCode;
         }
 
-        return $curlHandler;
     }
 
     /**
+     * Process the header returned from each curl request
+     *
      * @param $curlHandler
      * @param $header
      * @return int
-     *
-     * process the header returned from each curl request
      */
     private function headerCallback($curlHandler, $header){
         $trimmedHeader = trim($header);
@@ -125,4 +129,7 @@ class Parallec
         return strlen($header);
     }
 
+    public function getCurlResponses($resourceId){
+        return '';
+    }
 }

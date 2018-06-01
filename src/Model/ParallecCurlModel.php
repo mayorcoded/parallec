@@ -6,7 +6,7 @@
  * Time: 3:36 AM
  */
 namespace mayorcoded\parallec\Model;
-use mayorcoded\parallec\Parallec
+use mayorcoded\parallec\Parallec;
 
 class ParallecCurlModel
 {
@@ -40,9 +40,17 @@ class ParallecCurlModel
         $this->parallec = Parallec::getInstance();
     }
 
+
+    /**
+     * Get class property using magic method
+     *
+     * @param $key
+     * @return null
+     */
     public function __get($key)
     {
         $curlResponses = $this->parallec->getCurlResponses($this->resourceId);
         return isset($curlResponses[$key])? $curlResponses[$key]: null;
     }
+
 }

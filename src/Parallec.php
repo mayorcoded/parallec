@@ -135,6 +135,44 @@ class Parallec
 
     }
 
+
+    /**
+     * Process the header returned from each curl request
+     *
+     * @param $curlHandler
+     * @param $header
+     * @return int
+     */
+    private function headerCallback($curlHandler, $header){
+        $trimmedHeader = trim($header);
+        $colonPosition = strpos($trimmedHeader, ':');
+        $resourceId = ParallecUtilities::getResourceId($curlHandler);
+
+        if($colonPosition > 0){
+            $headerKey = substr($trimmedHeader,0,$colonPosition);
+            $headerValue = preg_replace('/^\W+/', '', substr($trimmedHeader, $colonPosition));
+
+            //set the response header for the curl request
+            $this->responses[$resourceId]['headers'][$headerKey] = $headerValue;
+        }
+
+        return strlen($header);
+    }
+
+    public function getCurlResponses($resourceId){
+
+        if (isset($this->responses[$resourceId]['code'])) {
+            return $this->responses[$resourceId];
+        }
+
+        $response = $this->getResponseFromPendingRequest($resourceId);
+        if(isset($response)){
+            return $response;
+        }
+
+        return null;
+    }
+
     private function getResponseFromPendingRequest($resourceId){
         //Set delays to wait for curl execution to complete
         $firstDelay = $nextDelay = 1;
@@ -169,7 +207,9 @@ class Parallec
             }
 
             //after curl execution, store responses
-            $this->storeResponses();
+            while ($executedCurl = curl_multi_info_read($this->multicurlHandle)){
+                $this->storeResponses($executedCurl);
+            }
 
             if(isset($this->responses[$resourceId]['data'])){
                 return $this->responses[$resourceId];
@@ -178,36 +218,7 @@ class Parallec
         }
     }
 
-    /**
-     * Process the header returned from each curl request
-     *
-     * @param $curlHandler
-     * @param $header
-     * @return int
-     */
-    private function headerCallback($curlHandler, $header){
-        $trimmedHeader = trim($header);
-        $colonPosition = strpos($trimmedHeader, ':');
-        $resourceId = ParallecUtilities::getResourceId($curlHandler);
-
-        if($colonPosition > 0){
-            $headerKey = substr($trimmedHeader,0,$colonPosition);
-            $headerValue = preg_replace('/^\W+/', '', substr($trimmedHeader, $colonPosition));
-
-            //set the response header for the curl request
-            $this->responses[$resourceId]['headers'][$headerKey] = $headerValue;
-        }
-
-        return strlen($header);
-    }
-
-    public function getCurlResponses($resourceId){
-
-        if(isset($this->responses[$resourceId]['code'])){
-            return $this->responses[$resourceId];
-        }
-
-
+    private function storeResponses($curlResponse){
 
     }
 }

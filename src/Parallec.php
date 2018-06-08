@@ -27,10 +27,39 @@ class Parallec
      */
     private static $instance = NULL;
 
+    /**
+     * A handle for multiple curl request
+     *
+     * @var resource
+     */
     private $multicurlHandle;
+
+    /**
+     * Keep a record of active curl execution
+     *
+     * @var null
+     */
     private $activeCurlExecution = null;
+
+    /**
+     * Stores execution status
+     *
+     * @var
+     */
     private $executionStatus;
+
+    /**
+     * stores requests in an array
+     *
+     * @var array
+     */
     private $requests = array();
+
+    /**
+     * stores responses in an array
+     *
+     * @var array
+     */
     private $responses = array();
 
     /**
@@ -106,6 +135,49 @@ class Parallec
 
     }
 
+    private function getResponseFromPendingRequest($resourceId){
+        //Set delays to wait for curl execution to complete
+        $firstDelay = $nextDelay = 1;
+
+
+        while ($this->activeCurlExecution && ($this->executionStatus == CURLM_OK || $this->executionStatus == CURLM_CALL_MULTI_PERFORM)){
+
+            usleep($firstDelay);
+
+            //increase delay by multiple of 1.1
+            $firstDelay = intval($firstDelay * 1.1);
+
+            $selectMultipleCurls = curl_multi_select($this->multicurlHandle, 0);
+
+            //if curl responses are not ready, delay a little
+            if($selectMultipleCurls === -1){
+                usleep(100000);
+            }
+
+            if($selectMultipleCurls >= CURLM_CALL_MULTI_PERFORM){
+                do{
+                    $this->executionStatus = curl_multi_exec($this->multicurlHandle, $this->activeCurlExecution);
+                    usleep($nextDelay);
+
+                    //increase delay by multiple of 1.1
+                    $nextDelay = intval($nextDelay * 1.1);
+
+                }while($this->executionStatus == CURLM_CALL_MULTI_PERFORM);
+
+                //restore next delay to default
+                $nextDelay = 1;
+            }
+
+            //after curl execution, store responses
+            $this->storeResponses();
+
+            if(isset($this->responses[$resourceId]['data'])){
+                return $this->responses[$resourceId];
+            }
+
+        }
+    }
+
     /**
      * Process the header returned from each curl request
      *
@@ -130,6 +202,12 @@ class Parallec
     }
 
     public function getCurlResponses($resourceId){
-        return '';
+
+        if(isset($this->responses[$resourceId]['code'])){
+            return $this->responses[$resourceId];
+        }
+
+
+
     }
 }

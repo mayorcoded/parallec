@@ -222,6 +222,7 @@ class Parallec
     private function storeResponses($curlResponse, $isAsynchronous = true){
 
         $resourceId = ParallecUtilities::getResourceId($curlResponse['handle']);
+        ParallecUtilities::stopCurlTimer($resourceId,$curlResponse);
 
         if($isAsynchronous){
             $this->responses[$resourceId]['data'] = curl_multi_getcontent($curlResponse['handle']);

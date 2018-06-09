@@ -11,6 +11,12 @@ use mayorcoded\parallec\Exceptions\ParallecInvalidParameterException;
 
 class ParallecUtilities
 {
+    /**
+     * keeps the timing for curl connections
+     *
+     * @var array
+     */
+    private static $curlTimers = array();
 
     /**
      * @param $url
@@ -59,4 +65,5 @@ class ParallecUtilities
     public static function getResourceId($curlHandler){
         return (string)$curlHandler;
     }
+
 }

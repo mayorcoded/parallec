@@ -121,6 +121,7 @@ class Parallec
         $this->requests[$resourceId] = $curlHandler;
         curl_setopt($curlHandler, CURLOPT_HEADERFUNCTION, array($this, 'headerCallback'));
         $curlCode = curl_multi_add_handle($this->multicurlHandle, $curlHandler);
+        ParallecUtilities::startCurlTimer($resourceId);
 
         if($curlCode === CURLM_OK || $curlCode === CURLM_CALL_MULTI_PERFORM){
 

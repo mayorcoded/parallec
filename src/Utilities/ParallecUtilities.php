@@ -66,4 +66,9 @@ class ParallecUtilities
         return (string)$curlHandler;
     }
 
+    public static function startCurlTimer($resourceId){
+        self::$curlTimers[$resourceId]['start'] = microtime(true);
+    }
+
+
 }

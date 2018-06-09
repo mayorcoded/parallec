@@ -218,7 +218,27 @@ class Parallec
         }
     }
 
-    private function storeResponses($curlResponse){
+    private function storeResponses($curlResponse, $isAsynchronous = true){
 
+        $resourceId = ParallecUtilities::getResourceId($curlResponse['handle']);
+
+        if($isAsynchronous){
+            $this->responses[$resourceId]['data'] = curl_multi_getcontent($curlResponse['handle']);
+        }else{
+            $this->responses[$resourceId]['data'] = curl_multi_getcontent($curlResponse['handle']);
+        }
+
+        $this->responses[$resourceId]['response'] = $this->responses[$resourceId]['data'];
+        foreach ($this->curlOptions as $curlOption => $curlValue)
+        {
+            $this->responses[$resourceId][$curlOption] = curl_getinfo($curlResponse['handle'], $curlOption);
+        }
+
+
+        if($isAsynchronous){
+            curl_multi_remove_handle($this->multicurlHandle, $curlResponse['handle']);
+        }
+
+        curl_close($curlResponse['handle']);
     }
 }

@@ -67,8 +67,13 @@ class ParallecUtilities
     }
 
     public static function startCurlTimer($resourceId){
-        self::$curlTimers[$resourceId]['start'] = microtime(true);
+        self::$curlTimers[$resourceId]['start_request'] = microtime(true);
     }
 
-
+    public static function stopCurlTimer($resourceId, $curlResponse){
+        self::$curlTimers[$resourceId]['end_request'] = microtime(true);
+        self::$curlTimers[$resourceId]['api'] = curl_getinfo($curlResponse['handle'], CURLINFO_EFFECTIVE_URL);
+        self::$curlTimers[$resourceId]['time'] = curl_getinfo($curlResponse['handle'], CURLINFO_TOTAL_TIME);
+        self::$curlTimers[$resourceId]['code'] = curl_getinfo($curlResponse['handle'], CURLINFO_HTTP_CODE);
+    }
 }

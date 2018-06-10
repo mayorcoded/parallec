@@ -20,7 +20,6 @@ class ParallecTest extends \PHPUnit\Framework\TestCase
     }
 
     public function testGetCode(){
-
         $url = 'http://www.google.com/search?q=zidane';
         $options = array(CURLOPT_RETURNTRANSFER => 1);
 
@@ -28,5 +27,15 @@ class ParallecTest extends \PHPUnit\Framework\TestCase
         $request = $parallec->ping($url, $options);
 
         $this->assertInternalType('integer', $request->http_code);
+    }
+
+    public function testJsonResponse(){
+        $url = 'http://jsonplaceholder.typicode.com/users';
+
+        $parallec = Parallec::getInstance();
+        $request = $parallec->ping($url);
+        $response = json_decode($request->response);
+
+        $this->assertInternalType('array', $response);
     }
 }

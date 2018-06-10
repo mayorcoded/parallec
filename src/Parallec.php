@@ -233,7 +233,7 @@ class Parallec
         $this->responses[$resourceId]['response'] = $this->responses[$resourceId]['data'];
         foreach ($this->curlOptions as $curlOption => $curlValue)
         {
-            $this->responses[$resourceId][$curlOption] = curl_getinfo($curlResponse['handle'], $curlOption);
+            $this->responses[$resourceId][$curlOption] = curl_getinfo($curlResponse['handle'], $curlValue);
         }
 
 

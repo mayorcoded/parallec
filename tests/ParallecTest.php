@@ -6,6 +6,7 @@
  * Time: 11:26 AM
  */
 use mayorcoded\parallec\Parallec;
+use mayorcoded\parallec\Exceptions\ParallecInvalidParameterException;
 
 class ParallecTest extends \PHPUnit\Framework\TestCase
 {
@@ -17,6 +18,12 @@ class ParallecTest extends \PHPUnit\Framework\TestCase
     public function testInstanceOfParallec(){
         $parallec = \mayorcoded\parallec\Parallec::getInstance();
         $this->assertInstanceOf(\mayorcoded\parallec\Parallec::class,$parallec);
+    }
+
+    public function testPingWithNull(){
+        $this->expectException(ParallecInvalidParameterException::class);
+        $parallec = Parallec::getInstance();
+        $parallec->ping(null);
     }
 
     public function testGetCode(){

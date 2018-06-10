@@ -8,6 +8,13 @@
 namespace mayorcoded\parallec\Model;
 use mayorcoded\parallec\Parallec;
 
+/**
+ * @property null http_code
+ * @property null response
+ * @property null headers
+ * @property null total_time
+ *
+ */
 class ParallecCurlModel
 {
 

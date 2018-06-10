@@ -71,5 +71,20 @@ class ParallecTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($request_2->http_code, $request_1->http_code);
     }
 
+    public function testSynchronousCalls(){
 
+        $url_1 = 'http://numbersapi.com/42';
+        $url_2 = 'http://numbersapi.com/2/29/date';
+
+        $options = array(CURLOPT_RETURNTRANSFER => 1);
+
+        $parallec = Parallec::getInstance();
+        $request_1 = $parallec->ping($url_1, $options);
+
+        $this->assertEquals(200, $request_1->http_code);
+
+        $request_2 = $parallec->ping($url_2, $options);
+
+        $this->assertEquals(200, $request_2->http_code);
+    }
 }

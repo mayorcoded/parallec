@@ -20,13 +20,23 @@ class ParallecTest extends \PHPUnit\Framework\TestCase
     }
 
     public function testGetCode(){
-        $url = 'http://www.google.com/search?q=zidane';
+        $url = 'http://www.google.com/search?q=hypertext';
         $options = array(CURLOPT_RETURNTRANSFER => 1);
 
         $parallec = Parallec::getInstance();
         $request = $parallec->ping($url, $options);
 
         $this->assertInternalType('integer', $request->http_code);
+    }
+
+    public function testRequestTime(){
+        $url = 'http://www.google.com/search?q=hypertext';
+        $options = array(CURLOPT_RETURNTRANSFER => 1);
+
+        $parallec = Parallec::getInstance();
+        $request = $parallec->ping($url, $options);
+
+        $this->assertInternalType('float', $request->total_time);
     }
 
     public function testJsonResponse(){

@@ -38,4 +38,13 @@ class ParallecTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInternalType('array', $response);
     }
+
+    public function testResponseHeaders(){
+        $url = 'http://jsonplaceholder.typicode.com/users';
+
+        $parallec = Parallec::getInstance();
+        $request = $parallec->ping($url);
+
+        $this->assertNotEmpty($request->headers);
+    }
 }

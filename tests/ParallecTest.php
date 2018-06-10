@@ -6,6 +6,7 @@
  * Time: 11:26 AM
  */
 use mayorcoded\parallec\Parallec;
+use mayorcoded\parallec\Model\ParallecCurlModel;
 use mayorcoded\parallec\Exceptions\ParallecInvalidParameterException;
 
 class ParallecTest extends \PHPUnit\Framework\TestCase
@@ -17,13 +18,20 @@ class ParallecTest extends \PHPUnit\Framework\TestCase
 
     public function testInstanceOfParallec(){
         $parallec = \mayorcoded\parallec\Parallec::getInstance();
-        $this->assertInstanceOf(\mayorcoded\parallec\Parallec::class,$parallec);
+        $this->assertInstanceOf(Parallec::class,$parallec);
     }
 
     public function testPingWithNull(){
         $this->expectException(ParallecInvalidParameterException::class);
         $parallec = Parallec::getInstance();
         $parallec->ping(null);
+    }
+
+    public function testParallecModel(){
+        $parallec = Parallec::getInstance();
+        $request = $parallec->ping('http://www.google.com/search?q=hypertext');
+
+        $this->assertInstanceOf(ParallecCurlModel::class, $request);
     }
 
     public function testGetCode(){

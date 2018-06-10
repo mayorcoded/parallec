@@ -227,7 +227,7 @@ class Parallec
         if($isAsynchronous){
             $this->responses[$resourceId]['data'] = curl_multi_getcontent($curlResponse['handle']);
         }else{
-            $this->responses[$resourceId]['data'] = curl_multi_getcontent($curlResponse['handle']);
+            $this->responses[$resourceId]['data'] = curl_exec($curlResponse['handle']);
         }
 
         $this->responses[$resourceId]['response'] = $this->responses[$resourceId]['data'];

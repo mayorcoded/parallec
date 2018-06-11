@@ -83,7 +83,8 @@ class ParallecTest extends \PHPUnit\Framework\TestCase
         $request_1 = $parallec->ping($url_1, $options);
         $request_2 = $parallec->ping($url_2, $options);
 
-        $this->assertEquals($request_2->http_code, $request_1->http_code);
+        $this->assertEquals( 200, $request_2->http_code );
+
     }
 
     public function testSynchronousCalls(){
